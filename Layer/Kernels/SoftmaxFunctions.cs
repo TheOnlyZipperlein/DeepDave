@@ -23,15 +23,9 @@ namespace DeepDave.Layer.Kernels {
             }
             vars[new Index1(1)] = sum;
         }
-        internal static void Activation(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> activated) {
-            activated[currentInput] = MathF.Exp(sumInput[currentInput]);
-        }
 
         internal static void DivisionBySumActivatedOutputs(Index2 currentInput, ArrayView<float> vars, ArrayView2D<float> buffer, ArrayView2D<float> activated) {
             activated[currentInput] = buffer[currentInput] / vars[new Index1(1)];
-        }
-        internal static void Derivate(Index2 currentInput, ArrayView2D<float> activated, ArrayView2D<float> derived) {
-            derived[currentInput] = (1 - activated[currentInput])*activated[currentInput];
         }
         internal static void Error(Index2 currentInput, ArrayView2D<float> error, ArrayView2D<float> activated, ArrayView3D<float> weightNextLayer, ArrayView2D<float> derived, ArrayView2D<float> should, ArrayView<float> variable) {
             error[currentInput] = 2 * (activated[currentInput] - should[currentInput]) * derived[currentInput];

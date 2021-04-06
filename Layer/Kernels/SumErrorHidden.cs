@@ -4,7 +4,7 @@ using ILGPU.Algorithms;
 namespace DeepDave.Layer.Kernels {
     internal class SumErrorHidden {
         internal static void ConvolutionalLayer2D(Index2 currentInput, ArrayView2D<float> error, ArrayView2D<float> errorNextLayer, ArrayView3D<float> weightNextLayer, ArrayView2D<float> derived, ArrayView2D<float> should, ArrayView<float> variable) {
-            int radius = (int)variable[new Index1(1)];
+            int radius = (int) variable[new Index1(2)];
             int diameter = radius * 2 + 1;
             int xBounds = (int)errorNextLayer.Extent.X;
             int yBounds = (int)errorNextLayer.Extent.Y;

@@ -8,17 +8,17 @@ namespace DeepDave.Helper {
     internal partial class GPUHelper {
         internal class Call {
             internal static void ActivationFunction(
-                Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>> action,
-                Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> activated
+                Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>> action,
+                Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> activated,  MemoryBuffer<float> variable
                 ) {
-                action(accelerator.DefaultStream, extent, sumInput, activated);
+                action(accelerator.DefaultStream, extent, sumInput, activated, variable);
             }
 
             internal static void DerivativeFunction(
-                Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>> action,
-                Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> derived
+                Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>> action,
+                Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> derived, MemoryBuffer<float> variable
                 ) {
-                action(accelerator.DefaultStream, extent, sumInput, derived);
+                action(accelerator.DefaultStream, extent, sumInput, derived, variable);
             }
 
             internal static void SumCalculate(

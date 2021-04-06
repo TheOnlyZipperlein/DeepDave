@@ -19,19 +19,19 @@ namespace DeepDave.Layer {
             return activated;
         }
         internal virtual MemoryBuffer3D<float> GetWeightBuffer(int currentSlice) {
-            return weights[currentSlice];
+            return weight[currentSlice];
         }
         internal virtual MemoryBuffer3D<float>[] GetWeightBuffer() {
-            return weights;
+            return weight;
         }
         internal virtual MemoryBuffer2D<float> GetErrors(int currentSlice) {
-            return errors[currentSlice];
+            return error[currentSlice];
         }
         internal virtual MemoryBuffer2D<float> GetDerived(int currentSlice) {
             return derived[currentSlice];
         }
         internal virtual MemoryBuffer2D<float>[] GetErros() {
-            return errors;
+            return error;
         }
         internal virtual MemoryBuffer2D<float>[] GetDerived() {
             return derived;

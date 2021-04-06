@@ -8,41 +8,46 @@ using System.Text;
 
 namespace DeepDave.Layer {
     public abstract partial class Layer2D : Saveable {
-
+        /// <summary>
+        /// Saves this Layer.
+        /// </summary>
+        /// <param name="writer"></param>
         void Saveable.Save(StreamWriter writer) {
             writer.WriteLine("Type: " + this.GetType().FullName);
             writer.WriteLine("Function: " + this.function);
             int sliceCount = this.bias.Length;
-            writer.WriteLine("SliceCount: " + this.bias.Length);            
+            writer.WriteLine("SliceCount: " + this.bias.Length);
             for (int i = 0; i < sliceCount; i++) {
-                writer.WriteLine("buffer2D: bias sliceIndex: " + i);
-                if (!bias[i].Equals(GPUHelper.dummyBuffer2D)) {
-                    this.SaveBuffer(writer, bias[i]);
-                }
-                writer.WriteLine("buffer2D: derived sliceIndex: " + i);
-                if (!derived[i].Equals(GPUHelper.dummyBuffer2D)) {
-                    this.SaveBuffer(writer, derived[i]);
-                }
-                writer.WriteLine("buffer2D: errors sliceIndex: " + i);
-                if (!errors[i].Equals(GPUHelper.dummyBuffer2D)) {
-                    this.SaveBuffer(writer, errors[i]);
-                }
-                writer.WriteLine("buffer2D: activated sliceIndex: " + i);
-                if (!activated[i].Equals(GPUHelper.dummyBuffer2D)) {
-                    this.SaveBuffer(writer, activated[i]);
-                }
-                writer.WriteLine("buffer2D: sumInput sliceIndex: " + i);
-                if (!sumInput[i].Equals(GPUHelper.dummyBuffer2D)) {
-                    this.SaveBuffer(writer, sumInput[i]);
-                }
-                writer.WriteLine("buffer2D: weights sliceIndex: " + i);
-                if (!weights[i].Equals(GPUHelper.dummyBuffer2D)) {
-                    this.SaveBuffer(writer, weights[i]);
-                }
+                this.SaveBuffer(writer, variable[i], i, nameof(variable));
+                this.SaveBuffer(writer, bias[i], i, nameof(bias));
+                this.SaveBuffer(writer, derived[i], i, nameof(derived));
+                this.SaveBuffer(writer, error[i], i, nameof(error));
+                this.SaveBuffer(writer, activated[i], i, nameof(activated));
+                this.SaveBuffer(writer, sumInput[i], i, nameof(sumInput));
+                this.SaveBuffer(writer, weight[i], i, nameof(weight));
             }
         }
 
-        protected void SaveBuffer(StreamWriter writer, MemoryBuffer2D<float> buffer) {
+        /// <summary>
+        /// Saves a 1DMemoryBuffer.
+        /// </summary>
+        protected void SaveBuffer(StreamWriter writer, MemoryBuffer<float> buffer, int sliceIndex, string name) {
+            if (buffer.Equals(GPUHelper.dummyBuffer2D)) return;
+            writer.WriteLine("buffer2D: " + name + " sliceIndex: " + sliceIndex);
+            var arr = buffer.GetAsArray();
+            var xBound = arr.GetUpperBound(0) + 1; 
+            writer.WriteLine("xBound: " + xBound);
+            for (int x = 0; x < xBound; x++) {
+                    writer.Write(arr[x] + " ");
+                
+            }
+        }
+        /// <summary>
+        /// Saves a 2DMemoryBuffer.
+        /// </summary>
+        protected void SaveBuffer(StreamWriter writer, MemoryBuffer2D<float> buffer, int sliceIndex, string name) {
+            if (buffer.Equals(GPUHelper.dummyBuffer2D)) return;
+            writer.WriteLine("buffer2D: " + name + " sliceIndex: " + sliceIndex);
             var arr = buffer.GetAs2DArray();
             var xBound = arr.GetUpperBound(0)+1; var yBound = arr.GetUpperBound(1)+1;
             writer.WriteLine("xBound: " + xBound + " yBound: "+ yBound);
@@ -52,8 +57,12 @@ namespace DeepDave.Layer {
                 }
             }            
         }
-
-        protected void SaveBuffer(StreamWriter writer, MemoryBuffer3D<float> buffer) {
+        /// <summary>
+        /// Saves a 3DMemoryBuffer.
+        /// </summary>
+        protected void SaveBuffer(StreamWriter writer, MemoryBuffer3D<float> buffer, int sliceIndex, string name) {
+            if (buffer.Equals(GPUHelper.dummyBuffer2D)) return;
+            writer.WriteLine("buffer3D: " + name + " sliceIndex: " + sliceIndex);
             var arr = buffer.GetAs3DArray();
             var xBound = arr.GetUpperBound(0)+1; var yBound = arr.GetUpperBound(1)+1; var zBound = arr.GetUpperBound(1)+1;
             writer.WriteLine("xBound: " + xBound + " yBound: " + yBound + " zBound: " + zBound);

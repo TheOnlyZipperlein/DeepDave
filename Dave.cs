@@ -127,19 +127,12 @@ namespace DeepDave
             var input = inputQueue.Dequeue();
             input.Load();
             ((InputLayer2D) layers.ElementAt(0)).SwapInputs(input.GetInputs());
-            foreach (Layer2D layer in layers) {
-                layer.CalculateOutput();
-            }
-            if (Config.learningEnabled) {
-                var activatedShoulds = input.GetShouldsActivated(shouldActivationLayer);
-                layers.Last().CalculateError(activatedShoulds);
-                layers.Last().AdjustWeights();
-                usedInputs.Add(input);
-                input.Unload();
-            } else {
-                input.Unload();
-            }
-            
+            MemoryBuffer2D<float>[] activatedShoulds = null;
+            if (Config.learningEnabled) activatedShoulds = input.GetShouldsActivated(shouldActivationLayer);
+            layers.Last().CalculateOutput(activatedShoulds);            
+            usedInputs.Add(input);
+            input.Unload();
+
             var re = new float[layers.Last().GetActivatedBuffer().Length][,];
             for(int i=0;i<re.Length; i++) {
                 re[i]= layers.Last().GetActivatedBuffer(i).GetAs2DArray();

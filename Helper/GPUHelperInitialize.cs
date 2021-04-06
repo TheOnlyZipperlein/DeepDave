@@ -21,7 +21,7 @@ namespace DeepDave.Helper {
         internal static List<MemoryBuffer<float>> buffers1D;
         internal static List<MemoryBuffer2D<float>> buffers2D;
         internal static List<MemoryBuffer3D<float>> buffers3D;
-        internal static MemoryBuffer<float> learningRateOnly;
+        internal static MemoryBuffer<float> dummyBuffer1D;
         internal static MemoryBuffer2D<float> dummyBuffer2D;
         internal static MemoryBuffer3D<float> dummyBuffer3D;
 
@@ -56,12 +56,9 @@ namespace DeepDave.Helper {
             buffers1D = new List<MemoryBuffer<float>>();
             buffers2D = new List<MemoryBuffer2D<float>>();
             buffers3D = new List<MemoryBuffer3D<float>>();
-
+            dummyBuffer1D = CreateBuffer(1);
             dummyBuffer2D = GPUHelper.accelerator.Allocate<float>(1, 1);
-            dummyBuffer3D = GPUHelper.accelerator.Allocate<float>(1, 1, 1);
-
-            float[] source = { Config.learningRate };
-            learningRateOnly = CreateBuffer(source, 1);            
+            dummyBuffer3D = GPUHelper.accelerator.Allocate<float>(1, 1, 1);                 
         }
     }
 } 
