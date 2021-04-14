@@ -16,6 +16,9 @@ namespace DeepDave.Layer.Kernels {
                     var asosInput = baseIndex.Add(new Index2(i, j));
                     if (asosInput.X < xBounds & asosInput.X >= 0 & asosInput.Y >= 0 & asosInput.Y < yBounds) {
                         var adjustment = fac * activatedPreviousLayer[asosInput];
+                        var d = activatedPreviousLayer[asosInput];
+                        if (float.IsNaN(adjustment)| float.IsInfinity(adjustment))
+                            ;
                         weights[new Index3(currentInput, i * diameter + j)] -= adjustment;                        
                     }
                 }

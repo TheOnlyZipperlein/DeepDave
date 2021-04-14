@@ -7,6 +7,12 @@ using System.Reflection;
 namespace DeepDave.Helper {
     internal partial class GPUHelper {
         internal class Call {
+            internal static void NormalizationFunction(
+                Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>> action,
+                Index2 extent, MemoryBuffer2D<float> outputPreviousLayerActivated, MemoryBuffer2D<float> outputActivated, MemoryBuffer<float> variable
+                ) {
+                action(accelerator.DefaultStream, extent, outputPreviousLayerActivated, outputActivated, variable);
+            }
             internal static void ActivationFunction(
                 Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>> action,
                 Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> activated,  MemoryBuffer<float> variable

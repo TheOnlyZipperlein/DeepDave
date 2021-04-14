@@ -9,8 +9,9 @@ using System.Reflection;
 namespace DeepDave.Layer {
     internal class InputLayer2D : Layer2D {
         private MemoryBuffer2D<float>[] inputs;
+        private Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>> normalize;
 
-        internal InputLayer2D(Size dimensions, Layer2D prevLayer, int sliceCount, string function = null) : base(prevLayer, function, sliceCount) {
+        internal InputLayer2D(Size dimensions, Layer2D prevLayer, int sliceCount, string function = null) : base(prevLayer, null, sliceCount) {
             this.inputs = new MemoryBuffer2D<float>[sliceCount];
             var widthOutput = (int)dimensions.Width;
             var heightOutput = (int)dimensions.Height;
@@ -19,6 +20,10 @@ namespace DeepDave.Layer {
                 this.activated[i] = GPUHelper.CreateBuffer(widthOutput, heightOutput);
                 this.sumInput[i] = GPUHelper.CreateBuffer(widthOutput, heightOutput);
             }
+            if (function != null) {
+                MethodInfo methodInfo = Type.GetType("DeepDave.Layer.Kernels.NormalizationFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
+                normalize = GPUHelper.CreateKernel(methodInfo).CreateLauncherDelegate<Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>>>();
+            }
         }
         internal MemoryBuffer2D<float>[] SwapInputs(MemoryBuffer2D<float>[] newInputs) {
             var buffer = inputs;
@@ -26,12 +31,12 @@ namespace DeepDave.Layer {
             return buffer;
         }
         internal override void CalculateOutput_() {
-            if (activation == null) {
+            if (normalize == null) {
                 activated = inputs;
             } else {
                 var accelerator = GPUHelper.accelerator;
                 for (int currentSlice = 0; currentSlice < activated.Length; currentSlice++) {
-                    sumCalculate(accelerator.DefaultStream, this.GetUnactivatedBuffer(currentSlice).Extent, this.GetWeightBuffer(currentSlice), inputs[currentSlice], this.GetUnactivatedBuffer(currentSlice), this.bias[currentSlice], variable[currentSlice]);
+                    GPUHelper.Call.NormalizationFunction(normalize, inputs[currentSlice].Extent, inputs[currentSlice], activated[currentSlice], variable[currentSlice]);
                 }
                 GPUHelper.Call.Wait();
             }

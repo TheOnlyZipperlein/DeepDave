@@ -56,7 +56,7 @@ namespace DeepDave
                 layer.Init();
             }
             Config.outputSize = new Size((int)layers.Last().GetActivatedBuffer(0).Width, (int)layers.Last().GetActivatedBuffer(0).Height);
-            shouldActivationLayer = new InputLayer2D(Config.outputSize, null,layers.Last().GetActivatedBuffer().Length , null);
+            shouldActivationLayer = new InputLayer2D(Config.outputSize, null,layers.Last().GetActivatedBuffer().Length , "ByteToByteFraction");
         }
 
         /// <summary>

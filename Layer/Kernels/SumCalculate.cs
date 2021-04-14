@@ -15,10 +15,15 @@ namespace DeepDave.Layer.Kernels {
                     var asosInput = baseIndex.Add(new Index2(i, j));
                     if (asosInput.X < xBounds & asosInput.X >= 0 & asosInput.Y >= 0 & asosInput.Y < yBounds) {
                         sum += weight[new Index3(currentInput, i * diameter + j)] * outputPreviousLayerActivated[asosInput];
+                        var w = weight[new Index3(currentInput, i * diameter + j)]; var oA = outputPreviousLayerActivated[asosInput];
+                        if (float.IsNaN(w*oA) | float.IsInfinity(w*oA))
+                            ;
                     }
                 }
             }
             sumInput[currentInput] = sum;
+            if (float.IsNaN(sum) | float.IsInfinity(sum))
+                ;
         }
         internal static void FullyConnectedLayer2D(Index2 currentInput, ArrayView3D<float> weights, ArrayView2D<float> outputsPreviousLayerActivated, ArrayView2D<float> sumInput, ArrayView2D<float> bias, ArrayView<float> variables) {
             float sum = bias[currentInput];

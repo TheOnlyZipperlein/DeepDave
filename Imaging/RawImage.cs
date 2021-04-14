@@ -104,7 +104,7 @@ namespace DeepDave.Imaging {
         }
 
         public static RawImage FromArray(float[][,] rgb) {
-            var image = new RawImage(rgb[(int) ColorFlag.red], rgb[(int) ColorFlag.green], rgb[(int) ColorFlag.blue], 
+            var image = new RawImage(rgb[(int) ColorFlag.red], rgb[(int) ColorFlag.green], rgb[(int) ColorFlag.blue],            
                 new Size(rgb[0].GetUpperBound(0)+1, rgb[0].GetUpperBound(1)+1));
             return image;
         }
@@ -131,7 +131,10 @@ namespace DeepDave.Imaging {
             var re = new byte[xLimit, yLimit];
             for(int x=0; x<xLimit; x++) {
                 for(int y=0; y<yLimit; y++) {
-                    re[x, y] = Convert.ToByte(array[x, y]);
+                    var v = array[x, y] * 255;
+                    if (v > 255) v = 255;
+                    if (v < 0) v = 0;
+                    re[x, y] = Convert.ToByte(v);
                 }
             }
             return re;

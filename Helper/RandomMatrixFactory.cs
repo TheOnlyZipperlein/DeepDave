@@ -5,7 +5,7 @@ using System.Text;
 namespace DeepDave.Helper {
     public class RandomMatrixFactory {
         internal static float fixedfloat = 0.0f;
-        internal static float dec = 1f;
+        internal static float dec = 0.1f;
         internal static Random rand = new Random(DateTime.Now.Millisecond);
 
         internal static float[] CreateRandomMatrix(int rows)
@@ -43,7 +43,7 @@ namespace DeepDave.Helper {
             var number = fixedfloat;
             if (number != 0f) return number;
             number = dec * (float) (rand.NextDouble());
-            if (rand.Next(2) % 2 == 0)
+            if (rand.Next(2) % 2 == 2)
                 number *= -1;
             return number;
         }
