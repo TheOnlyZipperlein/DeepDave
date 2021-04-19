@@ -17,12 +17,18 @@ namespace DeepDave.Layer.Kernels {
             sumInput[currentInput] = sum;
         }
 
-        internal static void AlternateWeights() {
-
+        internal static void AlternateWeights(Index2 currentInput, ArrayView3D<float> weight, ArrayView3D<float> newWeights) {
+            for(int z=0; z<weight.Extent.Z; z++) {
+                var index = new Index3(currentInput, z);
+                if (newWeights[index] != 0f) weight[index] = newWeights[index];
+            }
         }
 
-        internal static void AlternateConnections() {
-
+        internal static void AlternateConnections(Index2 currentInput, ArrayView3D<int> connectionInfo, ArrayView3D<int> newConnenctionInfo) {
+            for (int z = 0; z < connectionInfo.Extent.Z; z++) {
+                var index = new Index3(currentInput, z);
+                if (newConnenctionInfo[index] != 0f) connectionInfo[index] = newConnenctionInfo[index];
+            }
         }
     }
 }

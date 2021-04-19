@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace DeepDave.Layer.Kernels {
-    internal class SoftmaxFunctions {
+    internal class SoftmaxLayer2DFunctions {
         internal static void Normalization(Index1 currentInput, ArrayView2D<float> sumInput) {
             float xMax = sumInput[new Index2(0, 0)];
             for (int i = 0; i < sumInput.Extent.X; i++) {
