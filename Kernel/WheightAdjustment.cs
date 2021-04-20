@@ -1,7 +1,7 @@
 ﻿using ILGPU;
 using ILGPU.Algorithms;
 
-namespace DeepDave.Layer.Kernels {
+namespace DeepDave.Kernel {
     internal class WheightAdjustment {
         internal static void ConvolutionalLayer2D(Index2 currentInput, ArrayView3D<float> weights, ArrayView2D<float> error, ArrayView2D<float> activatedPreviousLayer, ArrayView2D<float> bias, ArrayView<float> variables) {
             int radius = (int) variables[new Index1(2)];

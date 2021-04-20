@@ -1,7 +1,7 @@
 ﻿using ILGPU;
 using ILGPU.Algorithms;
 
-namespace DeepDave.Layer.Kernels {
+namespace DeepDave.Kernel {
     internal class SumCalculate {
         internal static void ConvolutionalLayer2D(Index2 currentInput, ArrayView3D<float> weight, ArrayView2D<float> outputPreviousLayerActivated, ArrayView2D<float> sumInput, ArrayView2D<float> bias, ArrayView<float> variables) {
             int radius = (int) variables[new Index1(1)];

@@ -21,7 +21,7 @@ namespace DeepDave.Layer {
                 this.sumInput[i] = GPUHelper.CreateBuffer(widthOutput, heightOutput);
             }
             if (function != null) {
-                MethodInfo methodInfo = Type.GetType("DeepDave.Layer.Kernels.NormalizationFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
+                MethodInfo methodInfo = Type.GetType("DeepDave.Kernel.NormalizationFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
                 normalize = GPUHelper.CreateKernel(methodInfo).CreateLauncherDelegate<Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>>>();
             }
         }

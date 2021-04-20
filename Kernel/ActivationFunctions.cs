@@ -2,7 +2,7 @@
 using ILGPU.Algorithms;
 using System;
 
-namespace DeepDave.Layer.Kernels {
+namespace DeepDave.Kernel {
     internal class ActivationFunctions {
         internal static void FastSigmoid(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> activated, ArrayView<float> variable) { 
             float sumAbs = sumInput[currentInput]/10;

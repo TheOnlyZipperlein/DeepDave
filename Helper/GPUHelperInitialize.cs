@@ -17,7 +17,7 @@ namespace DeepDave.Helper {
         internal static Context context;
         internal static Accelerator accelerator;
         internal static Queue<MemoryBuffer2D<float>> reusableInputBuffer, reusableOutputBuffer;
-        internal static List<Kernel> kernels;
+        internal static List<ILGPU.Runtime.Kernel> kernels;
         internal static List<MemoryBuffer<float>> buffers1DFloat;
         internal static List<MemoryBuffer2D<float>> buffers2DFloat;
         internal static List<MemoryBuffer3D<float>> buffers3DFloat;
@@ -55,7 +55,7 @@ namespace DeepDave.Helper {
 
             reusableInputBuffer = new Queue<MemoryBuffer2D<float>>();
             reusableOutputBuffer = new Queue<MemoryBuffer2D<float>>();
-            kernels = new List<Kernel>();
+            kernels = new List<ILGPU.Runtime.Kernel>();
             buffers1DInt = new List<MemoryBuffer<int>>();
             buffers2DInt = new List<MemoryBuffer2D<int>>();
             buffers3DInt = new List<MemoryBuffer3D<int>>();
@@ -63,8 +63,8 @@ namespace DeepDave.Helper {
             buffers2DFloat = new List<MemoryBuffer2D<float>>();
             buffers3DFloat = new List<MemoryBuffer3D<float>>();
             dummyBuffer1D = CreateBuffer(1);
-            dummyBuffer2D = GPUHelper.accelerator.Allocate<float>(1, 1);
-            dummyBuffer3D = GPUHelper.accelerator.Allocate<float>(1, 1, 1);                 
+            dummyBuffer2D = CreateBuffer(1, 1);
+            dummyBuffer3D = CreateBuffer(1, 1, 1);                 
         }
     }
 } 

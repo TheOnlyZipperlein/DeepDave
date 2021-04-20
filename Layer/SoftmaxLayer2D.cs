@@ -38,18 +38,18 @@ namespace DeepDave.Layer.Special {
         }
 
         protected override void InitializeKernels() {
-            sumCalculateFunction = Type.GetType("DeepDave.Layer.Kernels.SumCalculate").GetMethod("FullyConnectedLayer2D", BindingFlags.NonPublic | BindingFlags.Static);
-            activationFunction = Type.GetType("DeepDave.Layer.Kernels.ActivationFunctions").GetMethod("Softmax", BindingFlags.NonPublic | BindingFlags.Static);
-            sumErrorFunction = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("Error", BindingFlags.NonPublic | BindingFlags.Static);
-            adjustWheigtsFunction = Type.GetType("DeepDave.Layer.Kernels.WheightAdjustment").GetMethod("FullyConnectedLayer2D", BindingFlags.NonPublic | BindingFlags.Static);
+            sumCalculateFunction = Type.GetType("DeepDave.Kernel.SumCalculate").GetMethod("FullyConnectedLayer2D", BindingFlags.NonPublic | BindingFlags.Static);
+            activationFunction = Type.GetType("DeepDave.Kernel.ActivationFunctions").GetMethod("Softmax", BindingFlags.NonPublic | BindingFlags.Static);
+            sumErrorFunction = Type.GetType("DeepDave.Kernel.SoftmaxFunctions").GetMethod("Error", BindingFlags.NonPublic | BindingFlags.Static);
+            adjustWheigtsFunction = Type.GetType("DeepDave.Kernel.WheightAdjustment").GetMethod("FullyConnectedLayer2D", BindingFlags.NonPublic | BindingFlags.Static);
 
-            var info = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("SumActivatedOutputs", BindingFlags.NonPublic | BindingFlags.Static);
+            var info = Type.GetType("DeepDave.Kernel.SoftmaxFunctions").GetMethod("SumActivatedOutputs", BindingFlags.NonPublic | BindingFlags.Static);
             sumActivatedOutputs = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index1, ArrayView<float>, ArrayView2D<float>>>();            
-            info = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("DivisionBySumActivatedOutputs", BindingFlags.NonPublic | BindingFlags.Static);
+            info = Type.GetType("DeepDave.Kernel.SoftmaxFunctions").GetMethod("DivisionBySumActivatedOutputs", BindingFlags.NonPublic | BindingFlags.Static);
             divisionBySumActivatedOutputs = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index2, ArrayView<float>, ArrayView2D<float>, ArrayView2D<float>>>();
-            info = Type.GetType("DeepDave.Layer.Kernels.DerivativeFunctions").GetMethod("Softmax", BindingFlags.NonPublic | BindingFlags.Static);
+            info = Type.GetType("DeepDave.Kernel.DerivativeFunctions").GetMethod("Softmax", BindingFlags.NonPublic | BindingFlags.Static);
             softmaxDerivative = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>>>();
-            info = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("Normalization", BindingFlags.NonPublic | BindingFlags.Static);
+            info = Type.GetType("DeepDave.Kernel.SoftmaxFunctions").GetMethod("Normalization", BindingFlags.NonPublic | BindingFlags.Static);
             softmaxNormalization = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index1, ArrayView2D<float>>>();            
             base.InitializeKernels();
         }

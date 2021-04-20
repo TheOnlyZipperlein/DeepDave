@@ -2,7 +2,7 @@
 using ILGPU.Algorithms;
 using System;
 
-namespace DeepDave.Layer.Kernels {
+namespace DeepDave.Kernel {
     internal class DerivativeFunctions {
         internal static void FastSigmoid(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> derived, ArrayView<float> variable) {            
             float v = sumInput[currentInput]/ variable[new Index1(1)]; ;
