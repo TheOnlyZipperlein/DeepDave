@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeepDave.Kernel {
+namespace DeepDave.Layer.Kernels {
     internal class Randomfunctions {
         internal static void Calculate(Index2 currentInput, ArrayView3D<float> weight, ArrayView3D<int> connectionInfo, ArrayView2D<float> outputPreviousLayerActivated, ArrayView2D<float> sumInput, ArrayView2D<float> bias, ArrayView<float> variables) {
             float sum = bias[currentInput];
@@ -29,16 +29,6 @@ namespace DeepDave.Kernel {
                 var index = new Index3(currentInput, z);
                 if (newConnenctionInfo[index] != 0f) connectionInfo[index] = newConnenctionInfo[index];
             }
-        }
-
-        internal static void CalculateAverageError(Index1 currentSlice, ArrayView2D<float> error, ArrayView<float> averageError) {
-            float sum=0f;
-            for(int i=0; i<error.Extent.X; i++) {
-                var summand = error[new Index2(i, 0)];
-                if (summand < 0) summand *= -1;
-                sum += summand;
-            }
-            averageError[currentSlice] = sum / error.Extent.X;
         }
     }
 }

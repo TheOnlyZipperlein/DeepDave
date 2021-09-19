@@ -68,7 +68,7 @@ namespace DeepDave.Helper {
             return buffer;
         }
 
-        internal static ILGPU.Runtime.Kernel CreateKernel(MethodInfo kernelFunction) {
+        internal static Kernel CreateKernel(MethodInfo kernelFunction) {
             var entryPointDescCalculate = EntryPointDescription.FromImplicitlyGroupedKernel(kernelFunction);
             var compiledKernel = GPUHelper.accelerator.Backend.Compile(entryPointDescCalculate, KernelSpecialization.Empty);
             var kernel = GPUHelper.accelerator.LoadAutoGroupedKernel(compiledKernel);
