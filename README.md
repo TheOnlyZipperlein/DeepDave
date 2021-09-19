@@ -1,3 +1,3 @@
 # DeepDave
  
-This is a little machine learning framework using ILGPU.NET. 
+This is machine learning framework in development using ILGPU.NET. 
