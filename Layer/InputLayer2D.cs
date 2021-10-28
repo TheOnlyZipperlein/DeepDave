@@ -1,6 +1,5 @@
 ﻿using DeepDave.Helper;
 using ILGPU;
-using ILGPU.Backends.EntryPoints;
 using ILGPU.Runtime;
 using System;
 using System.Drawing;

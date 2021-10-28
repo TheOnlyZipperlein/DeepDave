@@ -1,8 +1,6 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Text;
- 
+
 namespace DeepDave.Layer {
     public partial class Layer2D {
         public class ActivationFunctions {

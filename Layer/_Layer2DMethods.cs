@@ -3,8 +3,8 @@ using ILGPU.Runtime;
 
 namespace DeepDave.Layer {
     public abstract partial class Layer2D {
-        internal void CalculateOutput(MemoryBuffer2D<float>[] shoulds=null) {
-            if (prevLayer!=null) prevLayer.CalculateOutput();
+        internal void CalculateOutput(MemoryBuffer2D<float>[] shoulds = null) {
+            if (prevLayer != null) prevLayer.CalculateOutput();
             this.PreCalculate();
             this.CalculateOutput_();
             this.PostCalculate();
@@ -34,7 +34,7 @@ namespace DeepDave.Layer {
         /// Calls the loaded "activation" Method.
         /// </summary>
         internal virtual void ActivateOutput() {
-            for (int currentSlice = 0; currentSlice < activated.Length; currentSlice++) {               
+            for (int currentSlice = 0; currentSlice < activated.Length; currentSlice++) {
                 GPUHelper.Call.ActivationFunction(activation, this.GetActivatedBuffer(currentSlice).Extent, this.GetUnactivatedBuffer(currentSlice), this.GetActivatedBuffer(currentSlice), this.variable[currentSlice]);
             }
             GPUHelper.Call.Wait();
@@ -57,7 +57,7 @@ namespace DeepDave.Layer {
             this.PreError(shoulds);
             this.CalculateError_(shoulds);
             this.PostError(shoulds);
-            if(prevLayer!=null) prevLayer.CalculateError(null);
+            if (prevLayer != null) prevLayer.CalculateError(null);
         }
         /// <summary>
         /// Calls the loaded "sumForError" Method.
@@ -80,7 +80,7 @@ namespace DeepDave.Layer {
             PreAdjust();
             AdjustWeights_();
             PostAdjust();
-            if(prevLayer!=null) prevLayer.AdjustWeights();
+            if (prevLayer != null) prevLayer.AdjustWeights();
         }
         /// <summary>
         /// Calls the loaded "adjustWheigts" Method.

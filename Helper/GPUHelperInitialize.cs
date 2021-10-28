@@ -1,16 +1,9 @@
 ﻿using DeepDave.Logging;
 using ILGPU;
-using ILGPU.Algorithms;
-using ILGPU.Backends.EntryPoints;
 using ILGPU.Runtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 
 namespace DeepDave.Helper {
     internal partial class GPUHelper {
@@ -30,10 +23,10 @@ namespace DeepDave.Helper {
 
         internal static void CreateAccelerator(Boolean debugMode) {
             context = new Context(
-                ContextFlags.EnableParallelCodeGenerationInFrontend 
+                ContextFlags.EnableParallelCodeGenerationInFrontend
                 );
             context.EnableAlgorithms();
-            List<Accelerator> accelerators = new List<Accelerator>();          
+            List<Accelerator> accelerators = new List<Accelerator>();
 
             Accelerator cpuAccl = null;
             foreach (var acceleratorId in Accelerator.Accelerators) {
@@ -43,7 +36,7 @@ namespace DeepDave.Helper {
                     cpuAccl = accelerator;
                 }
             }
-            for(int i=0; i<accelerators.Count; i++) {
+            for (int i = 0; i < accelerators.Count; i++) {
                 var accl = accelerators.ElementAt(i);
                 if (cpuAccl != accl) accelerator = accl;
             }
@@ -64,7 +57,7 @@ namespace DeepDave.Helper {
             buffers3DFloat = new List<MemoryBuffer3D<float>>();
             dummyBuffer1D = CreateBuffer(1);
             dummyBuffer2D = GPUHelper.accelerator.Allocate<float>(1, 1);
-            dummyBuffer3D = GPUHelper.accelerator.Allocate<float>(1, 1, 1);                 
+            dummyBuffer3D = GPUHelper.accelerator.Allocate<float>(1, 1, 1);
         }
     }
-} 
+}

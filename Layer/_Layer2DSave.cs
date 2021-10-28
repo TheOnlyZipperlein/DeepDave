@@ -1,10 +1,7 @@
 ﻿using DeepDave.Helper;
 using DeepDave.Helper.AbstractionClasses;
 using ILGPU.Runtime;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace DeepDave.Layer {
     public abstract partial class Layer2D : Saveable {
@@ -35,11 +32,11 @@ namespace DeepDave.Layer {
             if (buffer.Equals(GPUHelper.dummyBuffer2D)) return;
             writer.WriteLine("buffer2D: " + name + " sliceIndex: " + sliceIndex);
             var arr = buffer.GetAsArray();
-            var xBound = arr.GetUpperBound(0) + 1; 
+            var xBound = arr.GetUpperBound(0) + 1;
             writer.WriteLine("xBound: " + xBound);
             for (int x = 0; x < xBound; x++) {
-                    writer.Write(arr[x] + " ");
-                
+                writer.Write(arr[x] + " ");
+
             }
         }
         /// <summary>
@@ -49,13 +46,13 @@ namespace DeepDave.Layer {
             if (buffer.Equals(GPUHelper.dummyBuffer2D)) return;
             writer.WriteLine("buffer2D: " + name + " sliceIndex: " + sliceIndex);
             var arr = buffer.GetAs2DArray();
-            var xBound = arr.GetUpperBound(0)+1; var yBound = arr.GetUpperBound(1)+1;
-            writer.WriteLine("xBound: " + xBound + " yBound: "+ yBound);
+            var xBound = arr.GetUpperBound(0) + 1; var yBound = arr.GetUpperBound(1) + 1;
+            writer.WriteLine("xBound: " + xBound + " yBound: " + yBound);
             for (int x = 0; x < xBound; x++) {
-                for(int y=0; y < yBound; y++) {
+                for (int y = 0; y < yBound; y++) {
                     writer.Write(arr[x, y] + " ");
                 }
-            }            
+            }
         }
         /// <summary>
         /// Saves a 3DMemoryBuffer.
@@ -64,7 +61,7 @@ namespace DeepDave.Layer {
             if (buffer.Equals(GPUHelper.dummyBuffer2D)) return;
             writer.WriteLine("buffer3D: " + name + " sliceIndex: " + sliceIndex);
             var arr = buffer.GetAs3DArray();
-            var xBound = arr.GetUpperBound(0)+1; var yBound = arr.GetUpperBound(1)+1; var zBound = arr.GetUpperBound(1)+1;
+            var xBound = arr.GetUpperBound(0) + 1; var yBound = arr.GetUpperBound(1) + 1; var zBound = arr.GetUpperBound(1) + 1;
             writer.WriteLine("xBound: " + xBound + " yBound: " + yBound + " zBound: " + zBound);
             for (int x = 0; x < xBound; x++) {
                 for (int y = 0; y < yBound; y++) {
@@ -74,5 +71,5 @@ namespace DeepDave.Layer {
                 }
             }
         }
-    }    
+    }
 }

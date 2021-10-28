@@ -1,11 +1,10 @@
 ﻿using ILGPU;
-using ILGPU.Algorithms;
 using System;
 
 namespace DeepDave.Layer.Kernels {
     internal class DerivativeFunctions {
-        internal static void FastSigmoid(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> derived, ArrayView<float> variable) {            
-            float v = sumInput[currentInput]/ variable[new Index1(1)]; ;
+        internal static void FastSigmoid(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> derived, ArrayView<float> variable) {
+            float v = sumInput[currentInput] / variable[new Index1(1)]; ;
             if (v < 0) v *= -1;
             v = 1 / (2 * (v + 1) * (v + 1));
             derived[currentInput] = v;
@@ -13,8 +12,8 @@ namespace DeepDave.Layer.Kernels {
 
         internal static void ReLU(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> derived, ArrayView<float> variable) {
             var fac = variable[new Index1(1)];
-            if (sumInput[currentInput] < 0) derived[currentInput] = fac*0.01f;            
-            else derived[currentInput] = fac*1.0f;
+            if (sumInput[currentInput] < 0) derived[currentInput] = fac * 0.01f;
+            else derived[currentInput] = fac * 1.0f;
         }
 
         internal static void Sigmoid(Index2 currentInput, ArrayView2D<float> sumInput, ArrayView2D<float> derived, ArrayView<float> variable) {

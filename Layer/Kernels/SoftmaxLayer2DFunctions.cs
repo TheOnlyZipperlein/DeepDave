@@ -1,7 +1,4 @@
 ﻿using ILGPU;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DeepDave.Layer.Kernels {
     internal class SoftmaxLayer2DFunctions {
@@ -18,7 +15,7 @@ namespace DeepDave.Layer.Kernels {
         }
         internal static void SumActivatedOutputs(Index1 currentInput, ArrayView<float> vars, ArrayView2D<float> buffer) {
             float sum = 0f;
-            for(int i=0; i<buffer.Extent.X; i++) {
+            for (int i = 0; i < buffer.Extent.X; i++) {
                 sum += buffer[new Index2(i, 0)];
             }
             vars[new Index1(1)] = sum;

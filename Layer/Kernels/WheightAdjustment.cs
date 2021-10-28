@@ -1,10 +1,9 @@
 ﻿using ILGPU;
-using ILGPU.Algorithms;
 
 namespace DeepDave.Layer.Kernels {
     internal class WheightAdjustment {
         internal static void ConvolutionalLayer2D(Index2 currentInput, ArrayView3D<float> weights, ArrayView2D<float> error, ArrayView2D<float> activatedPreviousLayer, ArrayView2D<float> bias, ArrayView<float> variables) {
-            int radius = (int) variables[new Index1(2)];
+            int radius = (int)variables[new Index1(2)];
             int diameter = radius * 2 + 1;
             var fac = error[currentInput] * variables[new Index1(0)];
             float xBounds = error.Extent.X;
@@ -17,9 +16,9 @@ namespace DeepDave.Layer.Kernels {
                     if (asosInput.X < xBounds & asosInput.X >= 0 & asosInput.Y >= 0 & asosInput.Y < yBounds) {
                         var adjustment = fac * activatedPreviousLayer[asosInput];
                         var d = activatedPreviousLayer[asosInput];
-                        if (float.IsNaN(adjustment)| float.IsInfinity(adjustment))
+                        if (float.IsNaN(adjustment) | float.IsInfinity(adjustment))
                             ;
-                        weights[new Index3(currentInput, i * diameter + j)] -= adjustment;                        
+                        weights[new Index3(currentInput, i * diameter + j)] -= adjustment;
                     }
                 }
             }

@@ -1,7 +1,4 @@
 ﻿using ILGPU.Runtime;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DeepDave.Layer {
     public abstract partial class Layer2D {

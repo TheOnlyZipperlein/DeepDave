@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DeepDave.Layer {
-    public abstract partial class Layer2D { 
+﻿namespace DeepDave.Layer {
+    public abstract partial class Layer2D {
         protected virtual void SetPrevious(Layer2D prevLayer) {
             this.prevLayer = prevLayer;
         }

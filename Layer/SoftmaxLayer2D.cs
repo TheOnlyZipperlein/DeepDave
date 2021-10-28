@@ -1,13 +1,9 @@
 ﻿using DeepDave.Helper;
 using ILGPU;
-using ILGPU.Backends;
-using ILGPU.Backends.EntryPoints;
 using ILGPU.Runtime;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
-using System.Text;
 
 namespace DeepDave.Layer.Special {
     public class SoftmaxLayer2D : Layer2D {
@@ -31,7 +27,7 @@ namespace DeepDave.Layer.Special {
                 this.error[i] = GPUHelper.CreateBuffer(x, y);
                 this.weight[i] = GPUHelper.CreateBuffer(x, y, GetWeightCount());
                 this.variable[i] = GPUHelper.accelerator.Allocate<float>(2);
-                float[] vars = { Config.learningRate, 0.0f};
+                float[] vars = { Config.learningRate, 0.0f };
                 this.variable[i].CopyFrom(vars, Index1.Zero, Index1.Zero, this.variable[i].Extent);
                 this.derived[i] = GPUHelper.CreateBuffer(x, y);
             }
@@ -44,13 +40,13 @@ namespace DeepDave.Layer.Special {
             adjustWheigtsFunction = Type.GetType("DeepDave.Layer.Kernels.WheightAdjustment").GetMethod("FullyConnectedLayer2D", BindingFlags.NonPublic | BindingFlags.Static);
 
             var info = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("SumActivatedOutputs", BindingFlags.NonPublic | BindingFlags.Static);
-            sumActivatedOutputs = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index1, ArrayView<float>, ArrayView2D<float>>>();            
+            sumActivatedOutputs = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index1, ArrayView<float>, ArrayView2D<float>>>();
             info = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("DivisionBySumActivatedOutputs", BindingFlags.NonPublic | BindingFlags.Static);
             divisionBySumActivatedOutputs = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index2, ArrayView<float>, ArrayView2D<float>, ArrayView2D<float>>>();
             info = Type.GetType("DeepDave.Layer.Kernels.DerivativeFunctions").GetMethod("Softmax", BindingFlags.NonPublic | BindingFlags.Static);
             softmaxDerivative = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>>>();
             info = Type.GetType("DeepDave.Layer.Kernels.SoftmaxFunctions").GetMethod("Normalization", BindingFlags.NonPublic | BindingFlags.Static);
-            softmaxNormalization = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index1, ArrayView2D<float>>>();            
+            softmaxNormalization = GPUHelper.CreateKernel(info).CreateLauncherDelegate<Action<AcceleratorStream, Index1, ArrayView2D<float>>>();
             base.InitializeKernels();
         }
 
@@ -77,12 +73,12 @@ namespace DeepDave.Layer.Special {
         internal override void ActivateOutput() {
             var accelerator = GPUHelper.accelerator;
             for (int currentSlice = 0; currentSlice < activated.Length; currentSlice++) {
-                GPUHelper.Call.ActivationFunction(activation ,this.GetActivatedBuffer(currentSlice).Extent, this.GetUnactivatedBuffer(currentSlice), this.buffer[currentSlice], this.variable[currentSlice]);
-            }            
+                GPUHelper.Call.ActivationFunction(activation, this.GetActivatedBuffer(currentSlice).Extent, this.GetUnactivatedBuffer(currentSlice), this.buffer[currentSlice], this.variable[currentSlice]);
+            }
             GPUHelper.Call.Wait();
         }
 
-        internal void CalculateDerivative() { 
+        internal void CalculateDerivative() {
             var accelerator = GPUHelper.accelerator;
             for (int currentSlice = 0; currentSlice < activated.Length; currentSlice++) {
                 softmaxDerivative(accelerator.DefaultStream, this.activated[currentSlice].Extent, this.GetActivatedBuffer(currentSlice), this.GetDerived(currentSlice));

@@ -1,5 +1,4 @@
-﻿using DeepDave;
-using System;
+﻿using System;
 using System.Drawing;
 
 namespace DeepDave.Imaging {
@@ -25,13 +24,13 @@ namespace DeepDave.Imaging {
         public NetworkInput GetNetworkInput() {
             var rgb = new byte[3][,];
             var rgbShould = new byte[3][,];
-            rgb[(int) ColorFlag.blue] = image.GetColorArray(ColorFlag.blue);
-            rgb[(int) ColorFlag.red] = image.GetColorArray(ColorFlag.red);
-            rgb[(int) ColorFlag.green] = image.GetColorArray(ColorFlag.green);
-            rgbShould[(int) ColorFlag.blue] = myIdeal.GetRawColorArray(ColorFlag.blue);
-            rgbShould[(int) ColorFlag.red] = myIdeal.GetRawColorArray(ColorFlag.red);
-            rgbShould[(int) ColorFlag.green] = myIdeal.GetRawColorArray(ColorFlag.green);
-            return new NetworkInput(rgb,rgbShould);
+            rgb[(int)ColorFlag.blue] = image.GetColorArray(ColorFlag.blue);
+            rgb[(int)ColorFlag.red] = image.GetColorArray(ColorFlag.red);
+            rgb[(int)ColorFlag.green] = image.GetColorArray(ColorFlag.green);
+            rgbShould[(int)ColorFlag.blue] = myIdeal.GetRawColorArray(ColorFlag.blue);
+            rgbShould[(int)ColorFlag.red] = myIdeal.GetRawColorArray(ColorFlag.red);
+            rgbShould[(int)ColorFlag.green] = myIdeal.GetRawColorArray(ColorFlag.green);
+            return new NetworkInput(rgb, rgbShould);
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace DeepDave.Imaging {
         }
 
         public void SetCalculatedArray(byte[,] colorArray, ColorFlag flag) {
-            image.SetColorArray(colorArray,  flag);
+            image.SetColorArray(colorArray, flag);
         }
 
         /// <summary>s

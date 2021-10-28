@@ -1,13 +1,8 @@
 ﻿using DeepDave.Helper;
 using ILGPU;
-using ILGPU.Backends;
-using ILGPU.Backends.EntryPoints;
 using ILGPU.Runtime;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Reflection;
-using System.Text;
 
 namespace DeepDave.Layer {
     public abstract partial class Layer2D {
@@ -36,7 +31,7 @@ namespace DeepDave.Layer {
             error = new MemoryBuffer2D<float>[sliceCount];
             weight = new MemoryBuffer3D<float>[sliceCount];
             bias = new MemoryBuffer2D<float>[sliceCount];
-            derived = new MemoryBuffer2D<float>[sliceCount];            
+            derived = new MemoryBuffer2D<float>[sliceCount];
             for (int i = 0; i < sliceCount; i++) {
                 float[] source = { Config.learningRate, 0f };
                 this.variable[i] = GPUHelper.CreateBuffer(source, source.Length);
@@ -79,16 +74,16 @@ namespace DeepDave.Layer {
 
         internal virtual void CreateActivationFunctionInfo() {
             if (function != null) {
-                if(activationFunction==null) activationFunction = Type.GetType("DeepDave.Layer.Kernels.ActivationFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
-                if(derivationFunction==null) derivationFunction = Type.GetType("DeepDave.Layer.Kernels.DerivativeFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
+                if (activationFunction == null) activationFunction = Type.GetType("DeepDave.Layer.Kernels.ActivationFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
+                if (derivationFunction == null) derivationFunction = Type.GetType("DeepDave.Layer.Kernels.DerivativeFunctions").GetMethod(function, BindingFlags.NonPublic | BindingFlags.Static);
             }
         }
 
         internal virtual void CreateCalculateKernelInfo() {
-            if(sumCalculateFunction==null) sumCalculateFunction = Type.GetType("DeepDave.Layer.Kernels.SumCalculate").GetMethod(this.GetType().Name, BindingFlags.NonPublic | BindingFlags.Static);
+            if (sumCalculateFunction == null) sumCalculateFunction = Type.GetType("DeepDave.Layer.Kernels.SumCalculate").GetMethod(this.GetType().Name, BindingFlags.NonPublic | BindingFlags.Static);
         }
         internal virtual void CreateCalculateErrorKernelInfo() {
-            if (Config.learningEnabled & sumErrorFunction==null) {                
+            if (Config.learningEnabled & sumErrorFunction == null) {
                 if (nextLayer == null) sumErrorFunction = Type.GetType("DeepDave.Layer.Kernels.SumErrorOut").GetMethod(nameof(Kernels.SumErrorOut.Common), BindingFlags.NonPublic | BindingFlags.Static);
                 else sumErrorFunction = Type.GetType("DeepDave.Layer.Kernels.SumErrorHidden").GetMethod(nextLayer.GetType().Name, BindingFlags.NonPublic | BindingFlags.Static);
             }

@@ -4,9 +4,9 @@ using System.Drawing.Imaging;
 
 namespace DeepDave.Imaging {
     public enum ColorFlag {
-            red,
-            blue,
-            green
+        red,
+        blue,
+        green
     }
 
     internal class RawImage {
@@ -36,14 +36,14 @@ namespace DeepDave.Imaging {
             this.size = size;
         }
 
-            /// <summary>
-            /// Slow, but safe method to convert the RawImage to a bitmap.
-            /// </summary>
-            /// <returns></returns>
-            internal Bitmap GetBitmapManaged() {
+        /// <summary>
+        /// Slow, but safe method to convert the RawImage to a bitmap.
+        /// </summary>
+        /// <returns></returns>
+        internal Bitmap GetBitmapManaged() {
             Bitmap btmp = new Bitmap(size.Width, size.Height);
-            for(int x=0; x < size.Width; x++) {
-                for(int y = 0; y< size.Height; y++) {
+            for (int x = 0; x < size.Width; x++) {
+                for (int y = 0; y < size.Height; y++) {
                     btmp.SetPixel(x, y, Color.FromArgb(255, red[x, y], green[x, y], blue[x, y]));
                 }
             }
@@ -53,7 +53,7 @@ namespace DeepDave.Imaging {
         internal void SetColorArray(byte[,] colorArray, ColorFlag colorFlag) {
             switch (colorFlag) {
                 case ColorFlag.red:
-                    red= colorArray;
+                    red = colorArray;
                     break;
                 case ColorFlag.blue:
                     blue = colorArray;
@@ -72,14 +72,14 @@ namespace DeepDave.Imaging {
         /// <returns></returns>
         internal static RawImage FromBitmap(Bitmap bmp) {
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadOnly,bmp.PixelFormat);
-            
+            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadOnly, bmp.PixelFormat);
+
             IntPtr ptr = bmpData.Scan0;
             int bytesBuffer = bmpData.Stride * bmp.Height;
             byte[] unsortedRgbValues = new byte[bytesBuffer];
             System.Runtime.InteropServices.Marshal.Copy(ptr, unsortedRgbValues, 0, bytesBuffer); bmp.UnlockBits(bmpData);
             byte[,] red = new byte[bmp.Width, bmp.Height], green = new byte[bmp.Width, bmp.Height], blue = new byte[bmp.Width, bmp.Height];
-            
+
             int x = 0, y = 0;
             for (int i = 0; i < unsortedRgbValues.Length; i++) {
                 switch (i % 3) {
@@ -104,8 +104,8 @@ namespace DeepDave.Imaging {
         }
 
         public static RawImage FromArray(float[][,] rgb) {
-            var image = new RawImage(rgb[(int) ColorFlag.red], rgb[(int) ColorFlag.green], rgb[(int) ColorFlag.blue],            
-                new Size(rgb[0].GetUpperBound(0)+1, rgb[0].GetUpperBound(1)+1));
+            var image = new RawImage(rgb[(int)ColorFlag.red], rgb[(int)ColorFlag.green], rgb[(int)ColorFlag.blue],
+                new Size(rgb[0].GetUpperBound(0) + 1, rgb[0].GetUpperBound(1) + 1));
             return image;
         }
 
@@ -115,7 +115,7 @@ namespace DeepDave.Imaging {
         /// <param name="color"></param>
         /// <returns></returns>
         internal byte[,] GetColorArray(ColorFlag color) {
-            switch(color) {
+            switch (color) {
                 case ColorFlag.red:
                     return red;
                 case ColorFlag.blue:
@@ -127,10 +127,10 @@ namespace DeepDave.Imaging {
         }
 
         private byte[,] ConvertedArray(float[,] array) {
-            int xLimit = array.GetUpperBound(0)+1, yLimit = array.GetUpperBound(1)+1;
+            int xLimit = array.GetUpperBound(0) + 1, yLimit = array.GetUpperBound(1) + 1;
             var re = new byte[xLimit, yLimit];
-            for(int x=0; x<xLimit; x++) {
-                for(int y=0; y<yLimit; y++) {
+            for (int x = 0; x < xLimit; x++) {
+                for (int y = 0; y < yLimit; y++) {
                     var v = array[x, y] * 255;
                     if (v > 255) v = 255;
                     if (v < 0) v = 0;

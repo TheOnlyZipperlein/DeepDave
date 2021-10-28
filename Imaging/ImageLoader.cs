@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace DeepDave.Imaging {
@@ -28,13 +27,13 @@ namespace DeepDave.Imaging {
         /// <returns></returns>
         public List<ManagedImage> LoadImages(String pathToDir, ManagedImage ideal = null) {
             List<ManagedImage> images = new List<ManagedImage>();
-            foreach(String file in Directory.GetFiles(pathToDir)) {
-                if(file.EndsWith("png") | file.EndsWith("jpg")) {
+            foreach (String file in Directory.GetFiles(pathToDir)) {
+                if (file.EndsWith("png") | file.EndsWith("jpg")) {
                     images.Add(new ManagedImage(new Bitmap(file), ideal));
                 }
             }
             if (images.Count == 0) Logger.WriteLine("ImageLoader: No images found in " + pathToDir);
             return images;
-        }        
-    }        
+        }
+    }
 }

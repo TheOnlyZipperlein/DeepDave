@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace DeepDave.Helper.AbstractionClasses {
     internal interface Saveable {
         internal void Save(StreamWriter writer);
     }
 
-    
+
 }

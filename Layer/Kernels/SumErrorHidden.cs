@@ -1,5 +1,4 @@
 ﻿using ILGPU;
-using ILGPU.Algorithms;
 
 namespace DeepDave.Layer.Kernels {
     internal class SumErrorHidden {
@@ -28,7 +27,7 @@ namespace DeepDave.Layer.Kernels {
                     ;
                 }
             }
-            if (float.IsNaN(error[currentInput]) | float.IsInfinity(e) | sum>1000 | sum <- 1000)
+            if (float.IsNaN(error[currentInput]) | float.IsInfinity(e) | sum > 1000 | sum < -1000)
                 ;
         }
         internal static void FullyConnectedLayer2D(Index2 currentInput, ArrayView2D<float> error, ArrayView2D<float> errorNextLayer, ArrayView3D<float> weightNextLayer, ArrayView2D<float> derived, ArrayView2D<float> should, ArrayView<float> variable) {

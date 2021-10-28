@@ -1,8 +1,6 @@
 ﻿using ILGPU;
-using ILGPU.Backends.EntryPoints;
 using ILGPU.Runtime;
 using System;
-using System.Reflection;
 
 namespace DeepDave.Helper {
     internal partial class GPUHelper {
@@ -15,7 +13,7 @@ namespace DeepDave.Helper {
             }
             internal static void ActivationFunction(
                 Action<AcceleratorStream, Index2, ArrayView2D<float>, ArrayView2D<float>, ArrayView<float>> action,
-                Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> activated,  MemoryBuffer<float> variable
+                Index2 extent, MemoryBuffer2D<float> sumInput, MemoryBuffer2D<float> activated, MemoryBuffer<float> variable
                 ) {
                 action(accelerator.DefaultStream, extent, sumInput, activated, variable);
             }

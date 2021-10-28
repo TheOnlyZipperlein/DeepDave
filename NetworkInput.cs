@@ -2,12 +2,6 @@
 using DeepDave.Layer;
 using ILGPU;
 using ILGPU.Runtime;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace DeepDave {
     public class NetworkInput {
@@ -27,13 +21,13 @@ namespace DeepDave {
             this.inputsOnGPU = new MemoryBuffer2D<float>[inputs.Length];
             this.shouldsOnGPU = new MemoryBuffer2D<float>[shoulds.Length];
 
-            for(int i=0; i<inputs.Length;i++) {
+            for (int i = 0; i < inputs.Length; i++) {
                 this.inputs[i] = new float[inputs[i].GetUpperBound(0) + 1, inputs[i].GetUpperBound(1) + 1];
                 System.Array.Copy(inputs[i], this.inputs[i], inputs[i].Length);
                 this.shoulds[i] = new float[shoulds[i].GetUpperBound(0) + 1, shoulds[i].GetUpperBound(1) + 1];
                 System.Array.Copy(shoulds[i], this.shoulds[i], shoulds[i].Length);
-                for(int x=0; x < 28; x++) {
-                    for(int y=0; y<28; y++) {
+                for (int x = 0; x < 28; x++) {
+                    for (int y = 0; y < 28; y++) {
                         this.inputs[0][x, y] /= 255;
                     }
                 }
@@ -46,7 +40,7 @@ namespace DeepDave {
             for (int i = 0; i < inputsOnGPU.Length; i++) {
                 inputsOnGPU[i] = GPUHelper.GetInputBuffer();
                 inputsOnGPU[i].CopyFrom(inputs[i], Index2.Zero, Index2.Zero, inputsOnGPU[i].Extent);
-            }            
+            }
         }
 
         public void Unload() {
@@ -59,7 +53,7 @@ namespace DeepDave {
         }
 
         public void LoadShoulds() {
-            for(int i=0; i<shoulds.Length; i++) {
+            for (int i = 0; i < shoulds.Length; i++) {
                 shouldsOnGPU[i] = GPUHelper.GetOutputBuffer();
                 shouldsOnGPU[i].CopyFrom(this.shoulds[i], Index2.Zero, Index2.Zero, shouldsOnGPU[i].Extent);
             }
@@ -71,7 +65,7 @@ namespace DeepDave {
             var buffer = inputLayer.SwapInputs(shouldsOnGPU);
             inputLayer.CalculateOutput();
             for (int i = 0; i < buffer.Length; i++) {
-                GPUHelper.ScrapOutputBuffer(buffer[i]);  
+                GPUHelper.ScrapOutputBuffer(buffer[i]);
             }
             return inputLayer.GetActivatedBuffer();
         }
